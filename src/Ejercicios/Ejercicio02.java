@@ -7,11 +7,11 @@ import java.io.*;
 public class Ejercicio02 {
     public static void main(String[] args) {
 
-        EstadoPartida partidita = new EstadoPartida(5,20);
-
-        partidita = recuperarPartida();
+        EstadoPartida partidita = new EstadoPartida(6,20);
 
         guardarPartida(partidita);
+        partidita = recuperarPartida();
+
         System.out.println(partidita);
     }
 
