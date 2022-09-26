@@ -1,5 +1,7 @@
 package Ejercicios;
 
+import Ejercicios.modelos.EstadoPartida;
+
 import java.io.*;
 
 public class Ejercicio02 {
