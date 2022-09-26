@@ -9,46 +9,40 @@ public class Ejercicio02 {
 
         EstadoPartida partidita = new EstadoPartida(6,20);
 
-        guardarPartida(partidita);
-        partidita = recuperarPartida();
+        try {
+            guardarPartida(partidita);
+            partidita = recuperarPartida();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 
         System.out.println(partidita);
     }
 
-    private static EstadoPartida recuperarPartida() {
+    private static EstadoPartida recuperarPartida() throws IOException {
         File fichero = new File("PartidaGuardada.txt");
-        EstadoPartida partidita = new EstadoPartida();
 
-        try {
             FileReader fr = new FileReader(fichero);
             BufferedReader bf = new BufferedReader(fr);
 
             int vida= Integer.parseInt(bf.readLine());
             int pantalla = Integer.parseInt(bf.readLine());
-            partidita.setVidasRestantes(vida);
-            partidita.setPantallaActual(pantalla);
+            bf.close();
+            fr.close();
 
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        return partidita;
+        return new EstadoPartida(vida,pantalla);
     }
 
-    private static void guardarPartida(EstadoPartida partidita) {
+    private static void guardarPartida(EstadoPartida partidita) throws IOException {
         File destino = new File("PartidaGuardada.txt");
-        try {
+
             BufferedWriter bw = new BufferedWriter(new FileWriter(destino));
-            bw.write(""+partidita.getVidasRestantes());
+            bw.write(String.valueOf(partidita.getVidasRestantes()));
             bw.newLine();
-            bw.write(""+partidita.getPantallaActual());
+            bw.write(String.valueOf(partidita.getPantallaActual()));
             bw.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
 

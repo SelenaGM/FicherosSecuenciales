@@ -1,10 +1,5 @@
 package Ejercicios.modelos;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
 public class EstadoPartida {
     private int vidasRestantes;
     private int pantallaActual;
