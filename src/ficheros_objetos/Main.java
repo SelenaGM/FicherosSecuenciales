@@ -50,13 +50,18 @@ public class Main {
     private static void escribirTiradas() {
         FileOutputStream fos;
         try {
-            fos = new FileOutputStream(dadosFichero);
-            ObjectOutputStream ous = new ObjectOutputStream(fos);
+            ObjectOutputStream ous ;
+            //si existe, usaremos nuestro propio objectOutputStream, sino el original
+            if(dadosFichero.exists()){
+                ous = new MiObjectOutputStream(new FileOutputStream(dadosFichero, true));
+            }else{
+                ous = new ObjectOutputStream(new FileOutputStream(dadosFichero, true));
+            }
+
             for (Dado dado:dados) {
                 ous.writeObject(dado);
             }
             ous.close();
-            fos.close();
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
