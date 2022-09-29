@@ -6,7 +6,7 @@ public class EscrituraBinarios {
     public static void main(String[] args) {
 
         File file = new File("binarios.dat");
-        try {
+        try {                                                  //FOS(file,true) si quieres añadir y no reemplazar
             DataOutputStream  dos = new DataOutputStream(new FileOutputStream(file));
 
             /*dos.writeInt(200);

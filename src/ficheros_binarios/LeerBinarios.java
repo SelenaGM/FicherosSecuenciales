@@ -10,6 +10,7 @@ public class LeerBinarios {
             DataInputStream dis = new DataInputStream(fis);
 
             //Creamos una excepción porque no sabemos cuan largo es el archivo, añadiremos el catch de eofException
+            //para que al terminar el fichero, salte del try&catch (el tyc tiene que estar dentro, desde fuera no llega)
             while(true){
                 int numero =dis.readInt();
                 System.out.printf("El número es: %d%n", numero);
