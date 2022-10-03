@@ -1,4 +1,4 @@
-package ficheros_objetos;
+package Ejercicios;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

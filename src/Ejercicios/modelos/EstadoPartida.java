@@ -1,6 +1,8 @@
 package Ejercicios.modelos;
 
-public class EstadoPartida {
+import java.io.Serializable;
+
+public class EstadoPartida implements Serializable {
     private int vidasRestantes;
     private int pantallaActual;
 
