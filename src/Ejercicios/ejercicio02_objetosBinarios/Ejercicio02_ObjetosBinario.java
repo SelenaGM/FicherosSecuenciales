@@ -1,9 +1,10 @@
-package Ejercicios;
+package Ejercicios.ejercicio02_objetosBinarios;
 
 import Ejercicios.modelos.EstadoPartida;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Ejercicio02_ObjetosBinario {
@@ -21,40 +22,46 @@ public class Ejercicio02_ObjetosBinario {
 
     public static void main(String[] args) {
 
-        int opcion;
+        int opcion = 0;
 
         do {
-            opcion= menu();
-            switch (opcion) {
-                case 1:
-                    guardarPartida();
-                    break;
-                case 2:
-                    mostrarPartidas();
-                    break;
-                case 3:
-                    eliminarFichero();
-                    break;
-                case 4:
-                    System.out.println("Hasta la próxima");
-                    break;
-                default:
-                    System.out.println("Esa opción no existe. Hasta luegui");
+            try {
+                opcion = menu();
+                switch (opcion) {
+                    case 1:
+                        guardarPartida();
+                        break;
+                    case 2:
+                        mostrarPartidas();
+                        break;
+                    case 3:
+                        eliminarPartidas();
+                        break;
+                    case 4:
+                        System.out.println("Hasta la próxima");
+                        break;
+                    default:
+                        System.out.println("Esa opción no existe. Hasta luegui");
+                }
+            }catch (InputMismatchException e){
+                opcion =0;
+                sc.nextLine();
             }
         }while(opcion!=4);
 
     }
 
-    private static void eliminarFichero() {
+    private static void eliminarPartidas() {
 
         sc.nextLine();
-        System.out.println("Esto eliminará el fichero, ¿estás seguro?");
-        String respuesta= sc.nextLine();
-        if(respuesta.equalsIgnoreCase("Si")){
+        System.out.println("Esto eliminará las partidas, ¿estás seguro? (si/no)");
+        String respuesta= sc.nextLine().toLowerCase().trim();
+        if(respuesta.equalsIgnoreCase("si")){
             partidaGuardada.delete();
             partidita.clear();
-            System.out.println("Fichero eliminado");
+            System.out.println("Partidas eliminadas");
         }else{
+            System.out.println("No se han eliminado las partidas");
 
         }
 
@@ -70,19 +77,18 @@ public class Ejercicio02_ObjetosBinario {
             fis = new FileInputStream(partidaGuardada);
             ObjectInputStream ois = new ObjectInputStream(fis);
             while (true) {
+                //con la excepcion EOFException nos aseguramos de que cuando acabe de leer, explote de forma controlada
                 EstadoPartida partida = (EstadoPartida) ois.readObject();
                 System.out.printf("Tiene %d vida/s y está en la pantalla %d%n", partida.getVidasRestantes(), partida.getPantallaActual());
             }
         }else{
-                System.out.println("No existe el fichero, crea una partida antes");
+                System.out.println("No tengo partidas guardadas, crea una partida antes");
         }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (EOFException e) {
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException|IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -93,18 +99,18 @@ public class Ejercicio02_ObjetosBinario {
         EstadoPartida partida = crearPartida();
         partidita.add(partida);
         try {
-            ObjectOutputStream ous;
+            ObjectOutputStream oos;
             if (partidaGuardada.exists()) {
-                ous = new MiObjectOutputStream(new FileOutputStream(partidaGuardada, true));
+                oos = new MyOOS(new FileOutputStream(partidaGuardada, true));
 
             } else {
-                ous = new ObjectOutputStream(new FileOutputStream(partidaGuardada, true));
+                oos = new ObjectOutputStream(new FileOutputStream(partidaGuardada, true));
             }
             for (EstadoPartida p : partidita) {
-                ous.writeObject(p);
+                oos.writeObject(p);
 
             }
-
+            oos.close();
         } catch (IOException e) {
 
             throw new RuntimeException(e);
@@ -118,14 +124,14 @@ public class Ejercicio02_ObjetosBinario {
         vida = sc.nextInt();
         System.out.println("Dime la pantalla");
         pantalla = sc.nextInt();
-        EstadoPartida partida = new EstadoPartida(vida, pantalla);
-        return partida;
+        sc.nextLine();
+        return new EstadoPartida(vida, pantalla);
     }
 
     private static int menu() {
         System.out.println("1-Guardar Partida");
         System.out.println("2-Mostrar Partidas");
-        System.out.println("3-Eliminar Fichero Partidas");
+        System.out.println("3-Eliminar Partidas");
         System.out.println("4-Salir");
         return sc.nextInt();
     }
